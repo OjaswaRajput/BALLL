@@ -1,63 +1,68 @@
+
 const Engine = Matter.Engine;
 const World = Matter.World;
 const Bodies = Matter.Bodies;
 const Body = Matter.Body;
-
-var engine;
+const Render = Matter.Render;
+var dustbinObj, paperObject,groundObject	
 var world;
 
-var ball;
-var ground;
 
 function setup() {
-	createCanvas(1280, 500);
+	createCanvas(1600, 700);
+	rectMode(CENTER);
+
 
 	engine = Engine.create();
-
 	world = engine.world;
-  
+	
+	paperObject=new paper(200,450,70);
+	groundObject=new ground(width/2,670,width,20);
+	dustbinObj=new dustbin(1200,650);
+	//Create a Ground
+	
 
-	var ball_options = {
-		isStatic: false,
-		restitution: 0.08,
-		friction: 0,
-		density: 0.2
-	}
-
-	//Create the Bodies Here.
-	ball = Bodies.circle(200, 250, 15, ball_options);
-    World.add(world, ball);
-
-	ground =new Ground(500,490,1000,10);
-	wall1 = new Ground(790, 440, 10, 105);
-	wall2 = new Ground(590, 440, 10, 105);
+	var render = Render.create({
+	  element: document.body,
+	  engine: engine,
+	  options: {
+	    width: 1600,
+	    height: 700,
+	    wireframes: false
+	  }
+	});
 
 	Engine.run(engine);
-
+	Render.run(render);
+  
 }
 
 
 function draw() {
-  background(0);
+  rectMode(CENTER);
+  background(230);
  
-
-  ground.display();
-  wall1.display();
-  wall2.display();
   
-  fill("white");
-  ellipseMode(RADIUS);
-  ellipse(ball.position.x, ball.position.y, 20);
+  paperObject.display();
+  groundObject.display();
+  dustbinObj.display();
 
-  Engine.update(engine);
-
-  drawSprites();
-
+  
+  
+ 
+  
+  
  
 }
 
-function keyPressed(){
-	if(keyCode===UP_ARROW){
-		Matter.Body.applyForce(ball,{x:600,y:500}, {x:3,y:3.5});
-	}
+function keyPressed() {
+  	if (keyCode === UP_ARROW) {
+
+    	Matter.Body.applyForce(paperObject.body,paperObject.body.position,{x:130,y:-145});
+
+    
+  	}
 }
+
+
+
